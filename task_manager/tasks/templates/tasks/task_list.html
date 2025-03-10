@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task List</title>
+    <style>
+        /* Color Variables */
+        :root {
+            --color-light: #DAD7CD;
+            --color-sage: #A3B18A;
+            --color-medium: #588157;
+            --color-dark: #3A5A40;
+            --color-darkest: #344E41;
+            --border-radius: 6px;
+            --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--color-light);
+            color: var(--color-darkest);
+            padding: 1.5rem;
+            line-height: 1.4;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            color: var(--color-darkest);
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: var(--color-medium);
+        }
+
+        /* Create Button */
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 1rem;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            background-color: var(--color-medium);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: background-color 0.2s ease;
+            box-shadow: var(--box-shadow);
+        }
+
+        .button:hover {
+            background-color: var(--color-dark);
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            margin: 1rem 0;
+        }
+
+        th {
+            background-color: var(--color-dark);
+            color: white;
+            text-align: left;
+            padding: 0.75rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--color-light);
+            font-size: 0.9rem;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(163, 177, 138, 0.1);
+        }
+
+        /* Status styling */
+        .status {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--border-radius);
+            background-color: var(--color-sage);
+            color: var(--color-darkest);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* Action buttons */
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-edit {
+            background-color: var(--color-medium);
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background-color: var(--color-dark);
+        }
+
+        .btn-delete {
+            background-color: #b44;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background-color: #933;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            background-color: var(--color-sage);
+            border-radius: var(--border-radius);
+            color: var(--color-darkest);
+            box-shadow: var(--box-shadow);
+        }
+
+    
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+            
+            th, td {
+                padding: 0.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2>Task List</h2>
+    
+    <div class="button-container">
+        <a href="{% url 'task_create' %}" class="button">Create New Task</a>
+    </div>
+
+    
+    
+    {% if tasks %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Due Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                    <tr>
+                        <td><strong>{{ task.title }}</strong></td>
+                        <td><strong>{{ task.description  }}</strong></td>
+                        <td><span class="status">{{ task.status }}</span></td>
+                        <td><strong>{{ task.due_date  }}</strong></td>
+                        <td class="actions">
+                            <a href="{% url 'task_update' task.id %}" class="btn btn-edit">Edit</a>
+                            <a href="{% url 'task_delete' task.id %}" class="btn btn-delete">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="empty-state">
+            <p>No tasks available.</p>
+        </div>
+    {% endif %}
+</body>
+</html>

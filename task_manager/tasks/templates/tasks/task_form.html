@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if form.instance.pk %}Edit{% else %}Create{% endif %} Task</title>
+    <style>
+        /* Color Variables */
+        :root {
+            --color-light: #DAD7CD;
+            --color-sage: #A3B18A;
+            --color-medium: #588157;
+            --color-dark: #3A5A40;
+            --color-darkest: #344E41;
+            --border-radius: 6px;
+            --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--color-light);
+            color: var(--color-darkest);
+            padding: 1.5rem;
+            line-height: 1.4;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            color: var(--color-darkest);
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: var(--color-medium);
+        }
+
+        form {
+            background-color: var(--color-sage);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 1.5rem;
+        }
+
+        
+        form p {
+            margin-bottom: 1rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        form p label {
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--color-darkest);
+            font-size: 0.95rem;
+        }
+
+        input, select, textarea {
+            padding: 0.75rem;
+            border: 1px solid var(--color-medium);
+            border-radius: var(--border-radius);
+            background-color: var(--color-light);
+            font-size: 0.95rem;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--color-darkest);
+            box-shadow: 0 0 0 2px rgba(58, 90, 64, 0.1);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+       
+        button {
+            display: block;
+            width: 100%;
+            background-color: var(--color-medium);
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            margin-top: 1rem;
+        }
+
+        button:hover {
+            background-color: var(--color-dark);
+
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        
+        a {
+            display: block;
+            text-align: center;
+            padding: 0.75rem;
+            background-color: transparent;
+            color: var(--color-dark);
+            text-decoration: none;
+            border: 1px solid var(--color-medium);
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+
+        a:hover {
+            background-color: rgba(88, 129, 87, 0.1);
+        }
+
+            /* Styling the checkbox container */
+        form p input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        appearance: none; /* Removes default styling */
+        background-color: var(--color-light);
+        border: 2px solid var(--color-medium);
+        border-radius: 4px;
+        display: inline-block;
+        position: relative;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+    }
+
+    /* Add checkmark when checked */
+    form p input[type="checkbox"]:checked {
+        background-color: var(--color-medium);
+        border-color: var(--color-dark);
+    }
+
+    /* Creating a checkmark */
+    form p input[type="checkbox"]::after {
+        content: "✔";
+        font-size: 14px;
+        color: white;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    form p input[type="checkbox"]:checked::after {
+        opacity: 1;
+    }
+
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            body {
+                padding: 1rem;
+            }
+            
+            form {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2>{% if form.instance.pk %}Edit{% else %}Create{% endif %} Task</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+    <a href="{% url 'task_list' %}">Return to Task List</a>
+
+    
+</body>
+</html>
